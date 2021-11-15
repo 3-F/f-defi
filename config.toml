@@ -1,3 +1,11 @@
-baseURL = "http://example.org/"
+baseURL = "http://101.37.161.120/home/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "DeFi Journal"
+theme = "book"
+
+disableKinds = ['taxonomy', 'taxonomyTerm']
+
+[params]
+	BookTheme = 'auto'
+	
+	BookServiceWorker = true
