@@ -1,21 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Docs on DeFi Journal</title>
-    <link>http://101.37.161.120/home/docs/</link>
-    <description>Recent content in Docs on DeFi Journal</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 15 Nov 2021 22:39:09 +0800</lastBuildDate><atom:link href="http://101.37.161.120/home/docs/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Test</title>
-      <link>http://101.37.161.120/home/docs/test/</link>
-      <pubDate>Mon, 15 Nov 2021 22:39:09 +0800</pubDate>
-      
-      <guid>http://101.37.161.120/home/docs/test/</guid>
-      <description>Button#XXXXXX
-Get Home3-FColumns#Left Content#Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter! Oculis non ritibus Telethusa protulit, sed sed aere valvis inhaesuro Pallas animam: qui quid, ignes. Miseratus fonte Ditis conubiaMid Content#Lorem markdownum insigne. Olympo signis Delphis! Retexi Nereius nova develat stringit, frustra Saturnius uteroque inter!Right Content#Lorem markdownum insigne.</description>
-    </item>
-    
-  </channel>
-</rss>
