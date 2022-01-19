@@ -6,16 +6,18 @@ bookHidden: true
 {{< hint info >}}
 # Information
 
-**Attacker**:  [0x4986e9017eA60e7AfCd10D844F85c80912C3863c](https://etherscan.io/address/0x4986e9017eA60e7AfCd10D844F85c80912C3863c)
-
 **BlockNumber**:  #14028474
+
+**Attacker**:  [0x4986e9017eA60e7AfCd10D844F85c80912C3863c](https://etherscan.io/address/0x4986e9017eA60e7AfCd10D844F85c80912C3863c)
 
 **Victims**:  
  
 [AnySwapRouterV4 0x6b7a87899490EcE95443e979cA9485CBE7E71522](https://etherscan.io/address/0x6b7a87899490ece95443e979ca9485cbe7e71522#code)
 {{< /hint >}}
 
-- vulnerable code (AnySwapRouterV4:L265-281)
+- **vulnerable code**
+
+(AnySwapRouterV4:L265-281)
 ```solidity
     function anySwapOutUnderlyingWithPermit(
         address from,
@@ -69,13 +71,13 @@ permit函数的功能是检查签名的有效性(比如: approve等), 由于unde
 
 ### **攻击流程**
 
-Step 1. 寻找那些可以绕过permit的token (如: WETH) 以及Anyswap对这些token实际控制的数量 (=min(用户授权给Anyswap的数量, 用户拥有的token数量))
+**Step 1.** 寻找那些可以绕过permit的token (如: WETH) 以及Anyswap对这些token实际控制的数量 (=min(用户授权给Anyswap的数量, 用户拥有的token数量))
 
-Step 2. 创建恶意合约fake_token，需要实现 underlying(), depositVault(), burn() 方法，其中underlying为可以绕过permit的token，其他两个方法可以为空
+**Step 2.** 创建恶意合约fake_token，需要实现 underlying(), depositVault(), burn() 方法，其中underlying为可以绕过permit的token，其他两个方法可以为空
 
-Step 3. 不断调用AnyswapRouterV4的`anySwapOutUnderlyingWithPermit`，传入参数为：from=victim，token=fake_token, amount=min(allowance(victim, anyswap), underlying.balanceOf(victim))
+**Step 3.** 不断调用AnyswapRouterV4的`anySwapOutUnderlyingWithPermit`，传入参数为：from=victim，token=fake_token, amount=min(allowance(victim, anyswap), underlying.balanceOf(victim))
 
-Step 4. 将fake_token中捞到的钱取走，跑路
+**Step 4.** 将fake_token中捞到的钱取走，跑路
 
 ### **TODO**
 [] 查找授权某一合约的全部地址 (在最新块/某一块)
@@ -88,5 +90,5 @@ Step 4. 将fake_token中捞到的钱取走，跑路
 
 [] 查找某个地址授权某个合约的全部Token
 
-### **漏洞利用**
+### **漏洞复现**
 见: https://github.com/3-F/defi-rekt/tree/master/pocs/2022-01-18-anyswap
