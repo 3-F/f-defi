@@ -77,5 +77,16 @@ Step 3. 不断调用AnyswapRouterV4的`anySwapOutUnderlyingWithPermit`，传入�
 
 Step 4. 将fake_token中捞到的钱取走，跑路
 
+### **TODO**
+[] 查找授权某一合约的全部地址 (在最新块/某一块)
+
+[] 查找某个Token授权给某个合约的全部地址
+
+[] 查找某个地址的全部授权合约
+
+[] 查找某个地址某种Token的全部授权合约
+
+[] 查找某个地址授权某个合约的全部Token
+
 ### **漏洞利用**
 见: https://github.com/3-F/defi-rekt/tree/master/pocs/2022-01-18-anyswap
