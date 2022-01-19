@@ -4,8 +4,8 @@ bookHidden: true
 # 2022-01-18-anyswap
 
 {{< hint info >}}
+# Information
 
-## Information
 **Attacker**:  [0x4986e9017eA60e7AfCd10D844F85c80912C3863c](https://etherscan.io/address/0x4986e9017eA60e7AfCd10D844F85c80912C3863c)
 
 **BlockNumber**:  #14028474
