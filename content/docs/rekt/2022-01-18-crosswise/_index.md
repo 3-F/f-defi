@@ -13,6 +13,7 @@ bookHidden: true
 **Victims**:  
  
 [CRSS-MasterChef 0x70873211CB64c1D4EC027Ea63A399A7d07c4085B](https://bscscan.com/address/0x70873211cb64c1d4ec027ea63a399a7d07c4085b#code)
+
 {{< /hint >}}
 
 - **vulnerable code**
@@ -66,14 +67,13 @@ bookHidden: true
 ```
 
 ### **漏洞原因**
+
 1. **Access Control**
 
 漏洞很低级，对特殊变量没有做好权限控制，但是利用过程还是有些技巧的
 
----
-**[Bug 0] 函数 `setTrustedForwarder` 没有做权限控制，任何人都可以调用该函数，传入一个非 0x0 的 `_trustedForwarder` 修改合约的 `trustedForwarder`**
+**函数 `setTrustedForwarder` 没有做权限控制，任何人都可以调用该函数，传入一个非 0x0 的 `_trustedForwarder` 修改合约的 `trustedForwarder`**
 
----
 
 `onlyOwner`会比较 _msgSender() 是不是 owner()，然而 _msgSender() 一定是真正的"msg sender"吗？
 
@@ -102,7 +102,7 @@ calldataload(i) 返回从i开始的一个 uint256，即 msg.data[i:i+32] (这里
 > 这时，支持GSN的合约，就会使用_msgSender这样的方法，对数据进行一次剥离，暴露出真实的msg.sender
 
 这无疑为攻击者带来了希望，因为**calldata的后20字节是可以人为控制的**，那什么条件下才可以进入这一分支呢？
-`msg.data.length >= 24 && isTrustedForwarder(msg.sender)` 第一个条件形同虚设，而第二个最重要的条件，由于 **[bug 0]** 的存在也变得无足轻重了
+`msg.data.length >= 24 && isTrustedForwarder(msg.sender)` 第一个条件形同虚设，而第二个最重要的条件，由于 **[bug 1]** 的存在也变得无足轻重了
 
 ### **攻击流程**
 **Step 1.** 调用 `setTrustedForwarder` 将合约的 `trustedForwarder` 设为自己

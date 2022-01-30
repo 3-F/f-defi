@@ -15,7 +15,7 @@ bookHidden: true
 [AnySwapRouterV4 0x6b7a87899490EcE95443e979cA9485CBE7E71522](https://etherscan.io/address/0x6b7a87899490ece95443e979ca9485cbe7e71522#code)
 {{< /hint >}}
 
-- vulnerable code 
+- **vulnerable code** 
 
 
 ### **漏洞原因**

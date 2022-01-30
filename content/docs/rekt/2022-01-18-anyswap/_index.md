@@ -6,13 +6,14 @@ bookHidden: true
 {{< hint info >}}
 # Information
 
-**BlockNumber**:  #14028474
+**BlockNumber**:  **#14028474**
 
 **Attacker**:  [0x4986e9017eA60e7AfCd10D844F85c80912C3863c](https://etherscan.io/address/0x4986e9017eA60e7AfCd10D844F85c80912C3863c)
 
 **Victims**:  
  
 [AnySwapRouterV4 0x6b7a87899490EcE95443e979cA9485CBE7E71522](https://etherscan.io/address/0x6b7a87899490ece95443e979ca9485cbe7e71522#code)
+
 {{< /hint >}}
 
 - **vulnerable code**
@@ -46,11 +47,12 @@ bookHidden: true
 ```
 
 ### **漏洞原因**
-1. 不可信参数的外部调用
+
+1. **不可信参数的外部调用**
 
 `anySwapOutUnderlyingWithPermit`允许用户传入参数token，并在函数内外部调用该地址 (underlying(), depositVault(), burn())，这意味着所有token的外部调用都是用户可控的
 
-2. 利用fallback函数绕过检查 (如permit)
+2. **利用fallback函数绕过检查 (如permit)**
 
 调用合约不存在的方法时，会落入fallback函数
 
