@@ -5,6 +5,36 @@ bookFlatSection: true
 
 # Defi incidents
 
+## 📜 **2021** 
+
+{{< expand "🧛 Sashimiswap 01-28" "...." >}}
+### [**>> 2021-12-30-Sashimiswap**](./2021-12-30-sashimiswap)
+
+**chain**: ETH | Binance-Smart-Chain | HECO
+
+**BlockNumber**:  **ETH #13905789** | **BSC #13923753** | **HECO #11320054**
+
+**Attacker**:
+
+0xa8189407a37001260975b9da61a81c3bd9f55908 ([In ETH](https://etherscan.io/address/0xa8189407a37001260975b9da61a81c3bd9f55908) | [In BSC](https://bscscan.com/address/0xa8189407a37001260975b9da61a81c3bd9f55908))
+
+**Txs**:
+
+ETH: [0x713c2ce2cb424eb746083c25b7e48c368bb64f587c2d77b5c474a307a79bf069](https://etherscan.io/tx/0x713c2ce2cb424eb746083c25b7e48c368bb64f587c2d77b5c474a307a79bf069)
+
+BSC: [0xdf719d2535be32e302c1670a7453bdf648101a43b412e44d9e7e3e3754cc3387](https://bscscan.com/tx/0xdf719d2535be32e302c1670a7453bdf648101a43b412e44d9e7e3e3754cc3387)
+
+HECO: [0xecde0b3821a8d250810db91d7ef82acced1eaf28324807bdbdfd755537366438](https://hecoinfo.com/tx/0xecde0b3821a8d250810db91d7ef82acced1eaf28324807bdbdfd755537366438)
+
+**Victims**:
+
+[ETH-UniswapV2Router02 0xe4FE6a45f354E845F954CdDeE6084603CEDB9410](https://etherscan.io/address/0xe4fe6a45f354e845f954cddee6084603cedb9410#code)
+
+[BSC-UniswapV2Router02 0x24cEFA86fC1826FD31b4cb911034907735F8085A](https://bscscan.com/address/0x24cefa86fc1826fd31b4cb911034907735f8085a#code)
+
+[HECO-UniswapV2Router02 0x1DaeD74ed1dD7C9Dabbe51361ac90A69d851234D](https://hecoinfo.com/address/0x1daed74ed1dd7c9dabbe51361ac90a69d851234d#code)
+{{< /expand >}}
+
 ## 📜 **2022**
 
 {{< expand "🧛 Crosswise 01-18" "...." >}}
