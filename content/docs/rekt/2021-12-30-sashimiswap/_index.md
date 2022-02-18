@@ -1,12 +1,12 @@
 ---
 bookHidden: true
 ---
-# 2022-01-28-Qubit
+# 2021-12-30-Sashimiswap
 
 {{< hint info >}}
 # Information
 
-**BlockNumber**:  **ETH #13905789** | **BSC #13923753** | **HECO #11320054**
+**BlockNumber**:  **ETH #13905602** | **BSC #13923753** | **HECO #11320054**
 
 **Attacker**:
 
@@ -31,6 +31,7 @@ HECO: [0xecde0b3821a8d250810db91d7ef82acced1eaf28324807bdbdfd755537366438](https
 {{< /hint >}}
 
 - **vulnerable code**
+
 (ETH-UniswapV2Router02:L834-855)
 ```solidity
     function swapExactTokensForETHSupportingFeeOnTransferTokens(
@@ -125,8 +126,43 @@ HECO: [0xecde0b3821a8d250810db91d7ef82acced1eaf28324807bdbdfd755537366438](https
 
 ### **漏洞原因**
 
+- 逻辑漏洞
+
+`swapExactTokensForETHSupportingFeeOnTransferTokens` 本应从一条交易路径 (Trade Path) 的最后一个 Pair 将 ETH 转出, **由于实现逻辑的错误, 不仅最后一个 Pair 转出 ETH, 第一个 Pair 重复转出了 ETH**
+
+Sashimiswap 采用一种与 Uniswap 背道而驰的方法储备流动性: 将**所有的流动性都放在 Router 里** (Uniswap 不同 Pair 的流动性就存储在相应的 Pair 合约中), **Router 不仅承担了记账的工作, 还存储了全部的流动性**
+
+`swapExactTokensForETHSupportingFeeOnTransferTokens` 先将用户的 输入Token 转入第一个 Pair (pair0), 接下来调用 `_swapSupportingFeeOnTransferTokens` 按照 path 不断在路径上的 Pair 中做 trade (只有最后一个 Pair 发生实际转账, 其他的只改变 Router 中的记账 `_pools[pair][token]`), 最后根据 pair0 前后 WETH 的差值判断应转给用户
+
+问题就出在最后根据 pair0 中 WETH 差值转账给用户这里, 我们根据几种简单的情况来看:
+
+❌ Case 1: [A, WETH]: `_swapSupportingFeeOnTransferTokens` 未执行, 外层的 `swapExactTokensForETHSupportingFeeOnTransferTokens` 没有转账 (第一个 Pair 前后 WETH 不变) 
+
+✔️ Case 2: [A, B, ..., WETH]: `_swapSupportingFeeOnTransferTokens` 前面的 Pair 虚拟转账, 最后一个 Pair 实际转账, 外层的 `swapExactTokensForETHSupportingFeeOnTransferTokens` 没有转账
+
+❌ Case 3: [A, WETH, B, C, WETH]: `_swapSupportingFeeOnTransferTokens` 前面的 Pair 虚拟转账, 最后一个 Pair 实际转账, 外层的 `swapExactTokensForETHSupportingFeeOnTransferTokens` 由于第一个 Pair 中 WETH 余额变化, 转账差值
+
+只有 Case 2 可以正确执行, Case 1 会导致用户亏损, 而 Case 3 会导致项目方亏损
+
+> Note: 鸡蛋放在一个笼子里的做法是不可取的
 
 ### **攻击流程**
+ 
+> 1. 根据 Case 3, 我们只需要找到或者构建出 [A, WETH, B, C, WETH] 这样一条 path 即可实现零元购, 而 A-WETH 这个 Pair 能换出的 WETH 越多需要攻击的次数变越小
+>
+> **Note**: 如果是这个 path 是 Sashimiswap 中原本就存在的, 一次 trade 即可获利 (A换出2倍的WETH), 但是如果 path 是自己构建的, 因为 path 中所有的 WETH 都是攻击者投入的, 所以只做一次 trade 只是把投入的 WETH 取出, 并不会照成 Sashimiswap 的亏损, 但是这次 trade 结束后, A/WETH 中的 WETH 转移到了 WETH/B 中, 这部分是多出来的, 只需要做一次反向的 trade (B->WETH), 或是移除流动性, 即可使 Sashimiswap 亏损
+>
+> 2. 对于 Router 中的其他 token, 只需要在 token/WETH 中做一次swap, 向 Router 中注入自己的 WETH (反正可以取出来)
 
+
+**Step 1**: 用WETH换空Sashimiswap中的各种token
+
+**Step 2**: 向 A/WETH, B/WETH, B/C, C/WETH 中添加流动性 (创建 Pair)
+> Note: 最好保证 A/WETH 中 A 的价格非常高 (即A占比非常小)
+
+**Step 3**: 调用 `swapExactTokensForETHSupportingFeeOnTransferTokens` 传入 path [A, WETH, B, WETH], 取走出大量额外的WETH
+
+**Step 4**: 在B/WETH中做一次反向的 trade (B->WETH) 或是移除所有 Pair 的流动性, 取回投入的 WETH
 
 ### **漏洞复现**
+见: https://github.com/3-F/defi-rekt/tree/master/pocs/2021-12-30-sashimiswap
