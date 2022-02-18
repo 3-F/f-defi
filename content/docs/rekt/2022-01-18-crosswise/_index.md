@@ -68,7 +68,7 @@ bookHidden: true
 
 ### **漏洞原因**
 
-1. **Access Control**
+- **Access Control**
 
 漏洞很低级，对特殊变量没有做好权限控制，但是利用过程还是有些技巧的
 
