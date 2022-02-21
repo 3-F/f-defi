@@ -24,6 +24,10 @@ HECO: [0xecde0b3821a8d250810db91d7ef82acced1eaf28324807bdbdfd755537366438](https
 
 [ETH-UniswapV2Router02 0xe4FE6a45f354E845F954CdDeE6084603CEDB9410](https://etherscan.io/address/0xe4fe6a45f354e845f954cddee6084603cedb9410#code)
 
+[ETH-SashimiInvestment 0x3F966FA1c0606e19047ed72068D2857677E07EF4](https://etherscan.io/address/0x3f966fa1c0606e19047ed72068d2857677e07ef4#code)
+
+[ETH-Unitroller 0xB5d53eC97Bed54fe4c2b77f275025c3fc132D770](https://etherscan.io/address/0xb5d53ec97bed54fe4c2b77f275025c3fc132d770#code)
+
 [BSC-UniswapV2Router02 0x24cEFA86fC1826FD31b4cb911034907735F8085A](https://bscscan.com/address/0x24cefa86fc1826fd31b4cb911034907735f8085a#code)
 
 [HECO-UniswapV2Router02 0x1DaeD74ed1dD7C9Dabbe51361ac90A69d851234D](https://hecoinfo.com/address/0x1daed74ed1dd7c9dabbe51361ac90a69d851234d#code)
@@ -124,6 +128,21 @@ HECO: [0xecde0b3821a8d250810db91d7ef82acced1eaf28324807bdbdfd755537366438](https
     }
 ```
 
+--- 
+2022-2-21: 复盘这次攻击时发现, Sashimiswap的资产不仅仅存放在Router中, 其PCV还包含一个类似Compound的Lending, 当Router中流动性不足时做Trade会去Lending中先withdraw
+
+陆续发现的几次小的攻击：
+
+0x86cba63cf824c2fce6a332fd217a1ef6b2627d8609a47570efd54b6b1c77118d
+
+0x90f8189c342b9f376d044da518f3c352cfb4376660df88fe06b5ab4fd8d4690e
+
+0xf084eba9c6a5c5811442342e9cec95c17a14095393bb009efabd9878394ce1ec
+
+0x20b21fe589dfea4ce4289e6af0509259af1e32173aec679fb4bfd1bc3ae142e1
+
+---
+
 ### **漏洞原因**
 
 - 逻辑漏洞
@@ -150,7 +169,7 @@ Sashimiswap 采用一种与 Uniswap 背道而驰的方法储备流动性: 将**�
  
 > 1. 根据 Case 3, 我们只需要找到或者构建出 [A, WETH, B, C, WETH] 这样一条 path 即可实现零元购, 而 A-WETH 这个 Pair 能换出的 WETH 越多需要攻击的次数变越小
 >
-> **Note**: 如果是这个 path 是 Sashimiswap 中原本就存在的, 一次 trade 即可获利 (A换出2倍的WETH), 但是如果 path 是自己构建的, 因为 path 中所有的 WETH 都是攻击者投入的, 所以只做一次 trade 只是把投入的 WETH 取出, 并不会照成 Sashimiswap 的亏损, 但是这次 trade 结束后, A/WETH 中的 WETH 转移到了 WETH/B 中, 这部分是多出来的, 只需要做一次反向的 trade (B->WETH), 或是移除流动性, 即可使 Sashimiswap 亏损
+> **Note**: 理论上, 如果是这个 path 是 Sashimiswap 中原本就存在的, 一次 trade 即可获利 (A换出2倍的WETH), 但是如果 path 是自己构建的, 因为 path 中所有的 WETH 都是攻击者投入的, 所以只做一次 trade 只是把投入的 WETH 取出, 并不会照成 Sashimiswap 的亏损, 但是这次 trade 结束后, A/WETH 中的 WETH 转移到了 WETH/B 中, 这部分是多出来的, 只需要做一次反向的 trade (B->WETH), 或是移除流动性, 即可使 Sashimiswap 亏损
 >
 > 2. 对于 Router 中的其他 token, 只需要在 token/WETH 中做一次swap, 向 Router 中注入自己的 WETH (反正可以取出来)
 
