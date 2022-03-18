@@ -1,4 +1,4 @@
-baseURL = "http://101.37.161.120/home/defi"
+baseURL = "http://101.37.161.120/defi"
 languageCode = "en-us"
 title = "DeFi Journal"
 theme = "book"
