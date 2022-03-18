@@ -1,4 +1,4 @@
 #!/bin/sh
 git pull
 hugo
-mv public/ ~/f/defi
+mv ./public ~/f/defi
